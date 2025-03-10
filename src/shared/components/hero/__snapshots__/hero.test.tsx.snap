@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Hero Component > should match snapshot 1`] = `
+<div
+  aria-label="hero section"
+  class="relative h-[400px] rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat"
+  role="region"
+  style="background-image: url(https://example.com/test-image.jpg);"
+>
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 bg-black/40"
+    data-testid="hero-overlay"
+  />
+  <div
+    class="relative z-10 h-full flex flex-col items-center justify-center gap-4 px-6"
+    data-testid="hero-content"
+  >
+    <h1
+      class="text-4xl md:text-6xl text-center text-pretty font-sans font-bold text-white"
+    >
+      Test Title
+    </h1>
+    <p
+      class="text-white text-pretty hidden md:block font-display text-center"
+    >
+      Test Description
+    </p>
+  </div>
+</div>
+`;

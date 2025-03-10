@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppLayout > should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-75 ease-linear"
+  >
+    <div
+      data-testid="navbar-mock"
+    >
+      Navbar Mock
+    </div>
+    <main
+      class="flex-grow"
+    >
+      <div
+        animate="[object Object]"
+        class="container mx-auto pb-6 px-4 md:px-0"
+        exit="[object Object]"
+        initial="[object Object]"
+        transition="[object Object]"
+      >
+        <div
+          data-testid="home-page"
+        >
+          Home Page Content
+        </div>
+      </div>
+    </main>
+    <div
+      data-testid="footer-mock"
+    >
+      Footer Mock
+    </div>
+  </div>
+</DocumentFragment>
+`;

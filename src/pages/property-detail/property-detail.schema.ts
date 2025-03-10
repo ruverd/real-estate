@@ -1,0 +1,10 @@
+import { z } from "zod";
+
+import { MAP_TEXTS } from "./property-detail.constants";
+
+export const contactFormSchema = z.object({
+  [MAP_TEXTS.CONTACT_AGENT.FORM.NAME.FIELD_NAME]: z.string().min(2, { message: MAP_TEXTS.CONTACT_AGENT.FORM.NAME.ERROR.MIN_LENGTH }),
+  [MAP_TEXTS.CONTACT_AGENT.FORM.EMAIL.FIELD_NAME]: z.string().email({ message: MAP_TEXTS.CONTACT_AGENT.FORM.EMAIL.ERROR.INVALID }),
+  [MAP_TEXTS.CONTACT_AGENT.FORM.PHONE.FIELD_NAME]: z.string().min(10, { message: MAP_TEXTS.CONTACT_AGENT.FORM.PHONE.ERROR.MIN_LENGTH }),
+  [MAP_TEXTS.CONTACT_AGENT.FORM.COMMENTS.FIELD_NAME]: z.string().min(10, { message: MAP_TEXTS.CONTACT_AGENT.FORM.COMMENTS.ERROR.MIN_LENGTH }),
+});

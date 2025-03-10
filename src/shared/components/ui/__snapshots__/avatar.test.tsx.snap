@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Avatar > should match snapshot with image 1`] = `
+<span
+  class="relative flex size-8 shrink-0 overflow-hidden rounded-full"
+  data-slot="avatar"
+>
+  <span
+    class="bg-muted flex size-full items-center justify-center rounded-full"
+    data-slot="avatar-fallback"
+  >
+    TU
+  </span>
+</span>
+`;
+
+exports[`Avatar > should match snapshot without image 1`] = `
+<span
+  class="relative flex size-8 shrink-0 overflow-hidden rounded-full"
+  data-slot="avatar"
+>
+  <span
+    class="bg-muted flex size-full items-center justify-center rounded-full"
+    data-slot="avatar-fallback"
+  >
+    TU
+  </span>
+</span>
+`;

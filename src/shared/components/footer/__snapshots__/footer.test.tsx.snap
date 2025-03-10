@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Footer Component > should match snapshot 1`] = `
+<footer
+  class="py-4 mt-auto border-t bg-background text-foreground text-sm"
+>
+  <div
+    class="container mx-auto flex items-center justify-center gap-2"
+  >
+    <span>
+      Developed by Ruver Dornelas
+    </span>
+  </div>
+</footer>
+`;

@@ -1,0 +1,112 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Navbar > should match snapshot 1`] = `
+<div
+  class="container px-4 md:px-0 h-16 mx-auto flex items-center justify-between"
+>
+  <div
+    data-testid="logo-component"
+  >
+    Logo
+  </div>
+  <nav
+    aria-label="Main"
+    class="group/navigation-menu relative flex max-w-max flex-1 items-center justify-center"
+    data-orientation="horizontal"
+    data-slot="navigation-menu"
+    data-viewport="true"
+    dir="ltr"
+  >
+    <div
+      style="position: relative;"
+    >
+      <ul
+        class="group flex flex-1 list-none items-center justify-center gap-1"
+        data-orientation="horizontal"
+        data-slot="navigation-menu-list"
+        dir="ltr"
+      >
+        <li
+          class="relative"
+          data-slot="navigation-menu-item"
+        >
+          <a
+            data-discover="true"
+            href="/"
+          >
+            <a
+              class="data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex-col gap-1 p-2 [&_svg:not([class*='size-'])]:size-4 group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-accent data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1"
+              data-radix-collection-item=""
+              data-slot="navigation-menu-link"
+            >
+              Home
+            </a>
+          </a>
+        </li>
+        <li
+          class="relative"
+          data-slot="navigation-menu-item"
+        >
+          <a
+            data-discover="true"
+            href="/about"
+          >
+            <a
+              class="data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex-col gap-1 p-2 [&_svg:not([class*='size-'])]:size-4 group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-accent data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1"
+              data-radix-collection-item=""
+              data-slot="navigation-menu-link"
+            >
+              About us
+            </a>
+          </a>
+        </li>
+        <li
+          class="relative"
+          data-slot="navigation-menu-item"
+        >
+          <a
+            data-discover="true"
+            href="/contact"
+          >
+            <a
+              class="data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex-col gap-1 p-2 [&_svg:not([class*='size-'])]:size-4 group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-accent data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 ring-ring/10 dark:ring-ring/20 dark:outline-ring/40 outline-ring/50 transition-[color,box-shadow] focus-visible:ring-4 focus-visible:outline-1"
+              data-radix-collection-item=""
+              data-slot="navigation-menu-link"
+            >
+              Contact us
+            </a>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="absolute top-full left-0 isolate z-50 flex justify-center"
+    />
+  </nav>
+  <div
+    class="items-center gap-2 hidden md:flex"
+  >
+    <svg
+      class="lucide lucide-phone size-4"
+      fill="none"
+      height="24"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+      />
+    </svg>
+    <span
+      class="font-sans font-medium text-foreground"
+    >
+      (257) 388-6895
+    </span>
+  </div>
+</div>
+`;
