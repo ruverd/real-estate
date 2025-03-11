@@ -1,58 +1,46 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { ArrowLeft, Bath, BedDouble, Bookmark, Calendar, Car, Clock, Ruler } from "lucide-react";
+import {
+  ArrowLeft,
+  Bath,
+  BedDouble,
+  Bookmark,
+  Calendar,
+  Car,
+  Clock,
+  Ruler,
+} from "lucide-react";
 import { useMemo } from "react";
-import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-import { usePropertiesQuery } from "@/server/queries/properties.query";
-import { usePropertyQuery, useSavedPropertiesQuery, useSavedPropertyMutation } from "@/server/queries/property.query";
-import { PropertyCard } from "@/shared/components/property-card/property-card";
+import {
+  usePropertyQuery,
+  useSavedPropertyMutation,
+} from "@/server/queries/property.query";
+import { QUERY_KEY_CONSTANTS } from "@/server/queries/query-key.constants";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
 import { Separator } from "@/shared/components/ui/separator";
-import { Textarea } from "@/shared/components/ui/textarea";
 import { isPropertyNew } from "@/shared/utils/date";
 import { formatPrice } from "@/shared/utils/number";
 import { cn } from "@/shared/utils/style";
 
-import { QUERY_KEY_CONSTANTS } from "@/server/queries/query-key.constants";
 import { useQueryClient } from "@tanstack/react-query";
+import { CardFeature } from "./components/card-feature";
+import { ContactForm } from "./components/contact-form";
 import { PropertyDetailSkeleton } from "./components/property-detail-skeleton";
-import { PropertyError } from "./components/property-error/property-error";
+import { PropertyError } from "./components/property-error";
 import { PropertyMap } from "./components/property-map";
+import { RelatedProperties } from "./components/related-properties";
+import { SavedProperties } from "./components/saved-properties";
 import { MAP_TEXTS } from "./property-detail.constants";
-import { contactFormSchema } from "./property-detail.schema";
-import type { ContactFormValues } from "./property-detail.types";
 
 export const PropertyDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: property, isLoading, error } = usePropertyQuery(id);
-  const { data: allProperties } = usePropertiesQuery();
-  const { data: savedProperties, isLoading: isSavedPropertiesLoading } =
-    useSavedPropertiesQuery();
+
   const savePropertyMutation = useSavedPropertyMutation();
   const queryClient = useQueryClient();
-
-  const form = useForm<ContactFormValues>({
-    resolver: zodResolver(contactFormSchema),
-    defaultValues: {
-      [MAP_TEXTS.CONTACT_AGENT.FORM.NAME.FIELD_NAME]: "",
-      [MAP_TEXTS.CONTACT_AGENT.FORM.EMAIL.FIELD_NAME]: "",
-      [MAP_TEXTS.CONTACT_AGENT.FORM.PHONE.FIELD_NAME]: "",
-      [MAP_TEXTS.CONTACT_AGENT.FORM.COMMENTS.FIELD_NAME]: "",
-    },
-  });
 
   const isSaved = useMemo(() => property?.saved, [property]);
   const isNew = useMemo(
@@ -83,8 +71,6 @@ export const PropertyDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: [property.id] });
     }
 
-    console.log("result savePropertyMutation", result);
-
     toast.success(
       isSaved ? MAP_TEXTS.UNSAVE_SUCCESS.TITLE : MAP_TEXTS.SAVE_SUCCESS.TITLE,
       {
@@ -95,28 +81,7 @@ export const PropertyDetailPage = () => {
     );
   };
 
-  const onSubmit = (data: ContactFormValues) => {
-    toast.success(MAP_TEXTS.CONTACT_SUCCESS.TITLE, {
-      description: MAP_TEXTS.CONTACT_SUCCESS.DESCRIPTION,
-    });
-    console.log(data);
-    form.reset();
-  };
-
-  const relatedProperties = useMemo(() => {
-    if (!allProperties || !property) return [];
-
-    return allProperties
-      .filter((p) => p.id !== property.id)
-      .sort((a, b) => {
-        const aPrice = a.salePrice || 0;
-        const bPrice = b.salePrice || 0;
-        return bPrice - aPrice;
-      })
-      .slice(0, 3);
-  }, [allProperties, property]);
-
-  if (isLoading || isSavedPropertiesLoading) {
+  if (isLoading) {
     return <PropertyDetailSkeleton />;
   }
 
@@ -180,54 +145,42 @@ export const PropertyDetailPage = () => {
           <Separator className="my-6" />
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="flex flex-col items-center p-4 bg-muted/50 rounded-lg">
-              <BedDouble className="size-6 mb-2" />
-              <span className="font-semibold">{property.bedrooms}</span>
-              <span className="text-sm text-foreground/70">
-                {MAP_TEXTS.PROPERTY_FEATURES.BEDROOMS}
-              </span>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-muted/50 rounded-lg">
-              <Bath className="size-6 mb-2" />
-              <span className="font-semibold">{property.bathrooms}</span>
-              <span className="text-sm text-foreground/70">
-                {MAP_TEXTS.PROPERTY_FEATURES.BATHROOMS}
-              </span>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-muted/50 rounded-lg">
-              <Car className="size-6 mb-2" />
-              <span className="font-semibold">{property.parking}</span>
-              <span className="text-sm text-foreground/70">
-                {MAP_TEXTS.PROPERTY_FEATURES.PARKING}
-              </span>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-muted/50 rounded-lg">
-              <Ruler className="size-6 mb-2" />
-              <span className="font-semibold">{property.sqft}</span>
-              <span className="text-sm text-foreground/70">
-                {MAP_TEXTS.PROPERTY_FEATURES.SQFT}
-              </span>
-            </div>
+            <CardFeature
+              icon={BedDouble}
+              title={MAP_TEXTS.PROPERTY_FEATURES.BEDROOMS}
+              value={property.bedrooms.toString()}
+            />
+            <CardFeature
+              icon={Bath}
+              title={MAP_TEXTS.PROPERTY_FEATURES.BATHROOMS}
+              value={property.bathrooms.toString()}
+            />
+            <CardFeature
+              icon={Car}
+              title={MAP_TEXTS.PROPERTY_FEATURES.PARKING}
+              value={property.parking.toString()}
+            />
+            <CardFeature
+              icon={Ruler}
+              title={MAP_TEXTS.PROPERTY_FEATURES.SQFT}
+              value={property.sqft.toString()}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="flex flex-col items-center p-4 bg-muted/50 rounded-lg">
-              <Calendar className="size-6 mb-2" />
-              <span className="font-semibold">
-                {property.yearBuilt ||
-                  MAP_TEXTS.PROPERTY_FEATURES.YEAR_BUILT_DEFAULT}
-              </span>
-              <span className="text-sm text-foreground/70">
-                {MAP_TEXTS.PROPERTY_FEATURES.YEAR_BUILT}
-              </span>
-            </div>
-            <div className="flex flex-col items-center p-4 bg-muted/50 rounded-lg">
-              <Clock className="size-6 mb-2" />
-              <span className="font-semibold">{formattedDateListed}</span>
-              <span className="text-sm text-foreground/70">
-                {MAP_TEXTS.PROPERTY_FEATURES.DATE_LISTED}
-              </span>
-            </div>
+            <CardFeature
+              icon={Calendar}
+              title={MAP_TEXTS.PROPERTY_FEATURES.YEAR_BUILT_DEFAULT}
+              value={
+                property.yearBuilt?.toString() ||
+                MAP_TEXTS.PROPERTY_FEATURES.YEAR_BUILT_DEFAULT
+              }
+            />
+            <CardFeature
+              icon={Clock}
+              title={MAP_TEXTS.PROPERTY_FEATURES.DATE_LISTED}
+              value={formattedDateListed}
+            />
           </div>
 
           <h2 className="text-xl font-semibold mb-4">
@@ -237,61 +190,8 @@ export const PropertyDetailPage = () => {
             {property.description || MAP_TEXTS.PROPERTY_DESCRIPTION.DEFAULT}
           </p>
 
-          <div className="mt-10">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold">
-                {MAP_TEXTS.SAVED_PROPERTIES.TITLE}
-              </h2>
-              <Button variant="link" className="text-primary" asChild>
-                <Link to="/saved-properties">
-                  {MAP_TEXTS.SAVED_PROPERTIES.VIEW_ALL}
-                </Link>
-              </Button>
-            </div>
-
-            {savedProperties && savedProperties.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {savedProperties.slice(0, 3).map((savedProperty) => (
-                  <PropertyCard
-                    key={`saved-${savedProperty.id}`}
-                    property={savedProperty}
-                    showFeatures={false}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="text-muted-foreground">
-                {MAP_TEXTS.SAVED_PROPERTIES.EMPTY}
-              </p>
-            )}
-          </div>
-
-          <div className="mt-10">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold">
-                {MAP_TEXTS.RELATED_LISTINGS.TITLE}
-              </h2>
-              <Button variant="link" className="text-primary" asChild>
-                <Link to="/">{MAP_TEXTS.RELATED_LISTINGS.VIEW_ALL}</Link>
-              </Button>
-            </div>
-
-            {relatedProperties.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedProperties.map((relatedProperty) => (
-                  <PropertyCard
-                    key={`related-${relatedProperty.id}`}
-                    property={relatedProperty}
-                    showFeatures={false}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="text-muted-foreground">
-                {MAP_TEXTS.RELATED_LISTINGS.EMPTY}
-              </p>
-            )}
-          </div>
+          <SavedProperties />
+          <RelatedProperties propertyId={property.id} />
         </div>
 
         <div className="lg:col-span-1">
@@ -304,103 +204,7 @@ export const PropertyDetailPage = () => {
                 {MAP_TEXTS.CONTACT_AGENT.DESCRIPTION}
               </p>
 
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-4"
-                >
-                  <FormField
-                    control={form.control}
-                    name={MAP_TEXTS.CONTACT_AGENT.FORM.NAME.FIELD_NAME}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {MAP_TEXTS.CONTACT_AGENT.FORM.NAME.LABEL}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder={
-                              MAP_TEXTS.CONTACT_AGENT.FORM.NAME.PLACEHOLDER
-                            }
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name={MAP_TEXTS.CONTACT_AGENT.FORM.EMAIL.FIELD_NAME}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {MAP_TEXTS.CONTACT_AGENT.FORM.EMAIL.LABEL}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder={
-                              MAP_TEXTS.CONTACT_AGENT.FORM.EMAIL.PLACEHOLDER
-                            }
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name={MAP_TEXTS.CONTACT_AGENT.FORM.PHONE.FIELD_NAME}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {MAP_TEXTS.CONTACT_AGENT.FORM.PHONE.LABEL}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder={
-                              MAP_TEXTS.CONTACT_AGENT.FORM.PHONE.PLACEHOLDER
-                            }
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name={MAP_TEXTS.CONTACT_AGENT.FORM.COMMENTS.FIELD_NAME}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {MAP_TEXTS.CONTACT_AGENT.FORM.COMMENTS.LABEL}
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder={
-                              MAP_TEXTS.CONTACT_AGENT.FORM.COMMENTS.PLACEHOLDER
-                            }
-                            className="resize-none"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <Button type="submit" className="w-full">
-                    {MAP_TEXTS.CONTACT_AGENT.FORM.SUBMIT_BUTTON}
-                  </Button>
-                </form>
-              </Form>
-
+              <ContactForm />
               <PropertyMap property={property} className="mt-6 pt-6 border-t" />
             </div>
           </div>
@@ -408,4 +212,4 @@ export const PropertyDetailPage = () => {
       </div>
     </div>
   );
-}; 
+};

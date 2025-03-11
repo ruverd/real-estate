@@ -1,3 +1,0 @@
-npx storybook@latest init 
-npm install --save-dev @storybook/react @storybook/react-vite @storybook/addon-links @storybook/addon-essentials @storybook/addon-onboarding @storybook/addon-interactions @storybook/addon-a11y @storybook/blocks @storybook/test 
-npm run storybook 
